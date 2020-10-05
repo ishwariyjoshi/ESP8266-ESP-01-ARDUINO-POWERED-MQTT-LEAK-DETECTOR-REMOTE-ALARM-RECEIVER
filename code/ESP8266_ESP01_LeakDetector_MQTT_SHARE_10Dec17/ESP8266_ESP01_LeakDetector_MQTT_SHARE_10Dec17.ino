@@ -52,10 +52,18 @@ void callback(char *topic, byte *payload, unsigned int length)
 
 }
 
-void reconnect()
-{
 
-    while (!client.connected())
+void setup()
+{
+    pinMode(LED_BUILTIN, OUTPUT);
+    Serial.begin(115200);
+    setup_wifi();
+    client.setServer(mqtt_server, 1883);
+    client.setCallback(callback);
+
+}
+ void reconnect() 
+ { while (!client.connected())
     {
         Serial.print("Attempting MQTT connection...");
 
@@ -76,19 +84,7 @@ void reconnect()
 
             delay(6000);
         }
-    }
-}
-
-void setup()
-{
-    pinMode(LED_BUILTIN, OUTPUT);
-    Serial.begin(115200);
-    setup_wifi();
-    client.setServer(mqtt_server, 1883);
-    client.setCallback(callback);
-
-}
-
+ }
 void loop()
 {
     if (!client.connected())
